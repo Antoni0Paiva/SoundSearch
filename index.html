@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoundSearch — Rádio Paiva</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <div class="logo">Sound<span>Search</span></div>
+    <nav>
+      <button class="active" onclick="showPage('search')" id="nav-search"> Buscar</button>
+      <button onclick="showPage('playlist')" id="nav-playlist">
+         Playlist
+        <span id="playlist-badge" style="display:none; background:var(--accent); color:white; border-radius:50%; font-size:0.7rem; padding:1px 6px; margin-left:2px;"></span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+
+    <div class="page active" id="page-search">
+      <div class="hero">
+        <p class="hero-eyebrow">// Rádio Paiva</p>
+        <h1>Descubra <em>novas</em><br>músicas agora</h1>
+        <p>Busque artistas, álbuns ou faixas e ouça previews instantâneos.</p>
+      </div>
+
+      <div class="search-wrapper">
+        <input type="text" id="search-input" placeholder="Buscar músicas, artistas ou álbuns..." autocomplete="off">
+        <button class="search-btn" onclick="doSearch()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="filters">
+        <div class="filter-group">
+          <button class="filter-btn active" data-type="music" onclick="setType('music', this)"> Música</button>
+          <button class="filter-btn" data-type="album" onclick="setType('album', this)"> Álbum</button>
+          <button class="filter-btn" data-type="artist" onclick="setType('artist', this)"> Artista</button>
+        </div>
+        <div class="explicit-toggle">
+          <input type="checkbox" id="explicit-check" checked>
+          <label for="explicit-check">Conteúdo explícito</label>
+        </div>
+      </div>
+
+      <div id="results-container">
+        <div class="empty-state">
+          <div class="big"></div>
+          <p>Digite algo para começar a descobrir músicas</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-detail">
+      <button class="detail-back" onclick="showPage('search')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Voltar para busca
+      </button>
+      <div id="detail-content"></div>
+    </div>
+
+    <div class="page" id="page-playlist">
+      <div class="playlist-header">
+        <div>
+          <h1>Minha Playlist</h1>
+          <div class="playlist-count" id="playlist-count">0 músicas salvas</div>
+        </div>
+      </div>
+      <div id="playlist-content"></div>
+    </div>
+
+  </main>
+
+  <div class="mini-player" id="mini-player">
+    <img class="mini-player-art" id="player-art" src="" alt="">
+    <div class="mini-player-info">
+      <div class="mini-player-title" id="player-title">—</div>
+      <div class="mini-player-artist" id="player-artist">—</div>
+    </div>
+    <div class="mini-player-controls">
+      <span class="time-label" id="player-current">0:00</span>
+      <div class="progress-bar" id="progress-bar" onclick="seekAudio(event)">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <span class="time-label" id="player-duration">0:30</span>
+      <button class="mini-btn primary" id="mini-play-btn" onclick="togglePlay()">▶</button>
+    </div>
+    <button class="mini-close" onclick="closePlayer()">✕</button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <audio id="audio-player"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
