@@ -3,19 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SoundSearch — Rádio Paiva</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <title>SoundSearch — Rádio Universitária</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Archivo+Black&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="components.css">
 </head>
 <body>
 
   <header>
-    <div class="logo">Sound<span>Search</span></div>
+    <div class="logo">
+      <div class="logo-icon"><span></span></div>
+      SoundSearch
+    </div>
     <nav>
-      <button class="active" onclick="showPage('search')" id="nav-search"> Buscar</button>
+      <button class="active" onclick="showPage('search')" id="nav-search">
+        <span>Buscar</span>
+      </button>
       <button onclick="showPage('playlist')" id="nav-playlist">
-         Playlist
-        <span id="playlist-badge" style="display:none; background:var(--accent); color:white; border-radius:50%; font-size:0.7rem; padding:1px 6px; margin-left:2px;"></span>
+        <span>Playlist</span>
+        <span id="playlist-badge" style="display:none; background:var(--coral); color:#fff; border-radius:10px; font-size:10px; font-weight:700; padding:1px 7px; margin-left:4px;"></span>
       </button>
     </nav>
   </header>
@@ -24,25 +34,26 @@
 
     <div class="page active" id="page-search">
       <div class="hero">
-        <p class="hero-eyebrow">// Rádio Paiva</p>
+        <p class="hero-label">Rádio Universitária</p>
         <h1>Descubra <em>novas</em><br>músicas agora</h1>
         <p>Busque artistas, álbuns ou faixas e ouça previews instantâneos.</p>
       </div>
 
       <div class="search-wrapper">
-        <input type="text" id="search-input" placeholder="Buscar músicas, artistas ou álbuns..." autocomplete="off">
+        <input type="text" id="search-input" placeholder="Artista, álbum ou música..." autocomplete="off">
         <button class="search-btn" onclick="doSearch()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
         </button>
       </div>
 
       <div class="filters">
         <div class="filter-group">
-          <button class="filter-btn active" data-type="music" onclick="setType('music', this)"> Música</button>
-          <button class="filter-btn" data-type="album" onclick="setType('album', this)"> Álbum</button>
-          <button class="filter-btn" data-type="artist" onclick="setType('artist', this)"> Artista</button>
+          <button class="filter-btn active" data-type="music" onclick="setType('music', this)">Música</button>
+          <button class="filter-btn" data-type="album"  onclick="setType('album', this)">Álbum</button>
+          <button class="filter-btn" data-type="artist" onclick="setType('artist', this)">Artista</button>
         </div>
         <div class="explicit-toggle">
           <input type="checkbox" id="explicit-check" checked>
@@ -52,7 +63,7 @@
 
       <div id="results-container">
         <div class="empty-state">
-          <div class="big"></div>
+          <span class="big">🎧</span>
           <p>Digite algo para começar a descobrir músicas</p>
         </div>
       </div>
@@ -60,10 +71,11 @@
 
     <div class="page" id="page-detail">
       <button class="detail-back" onclick="showPage('search')">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
         </svg>
-        Voltar para busca
+        Voltar
       </button>
       <div id="detail-content"></div>
     </div>
@@ -83,7 +95,7 @@
   <div class="mini-player" id="mini-player">
     <img class="mini-player-art" id="player-art" src="" alt="">
     <div class="mini-player-info">
-      <div class="mini-player-title" id="player-title">—</div>
+      <div class="mini-player-title"  id="player-title">—</div>
       <div class="mini-player-artist" id="player-artist">—</div>
     </div>
     <div class="mini-player-controls">
@@ -100,6 +112,6 @@
   <div class="toast" id="toast"></div>
   <audio id="audio-player"></audio>
 
-  <script src="script.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
