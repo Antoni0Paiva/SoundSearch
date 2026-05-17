@@ -333,3 +333,96 @@ main {
   grid-template-columns: repeat(auto-fill, minmax(172px, 1fr));
   gap: 12px;
 }
+
+.suggestion-wrapper {
+  max-width: 720px;
+  margin: 0 auto;
+  padding-top: 40px;
+}
+
+.suggestion-header {
+  margin-bottom: 32px;
+}
+
+.suggestion-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 56px);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-bottom: 14px;
+}
+
+.suggestion-header p {
+  color: var(--text-2);
+  font-size: 15px;
+  line-height: 1.7;
+  max-width: 520px;
+}
+
+.suggestion-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  outline: none;
+  transition:
+    border-color 0.18s var(--ease),
+    background 0.18s var(--ease);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--coral);
+  background: var(--surface-2);
+}
+
+.form-group input.error,
+.form-group textarea.error {
+  border-color: #ff4d6d;
+}
+
+.form-error {
+  font-size: 12px;
+  color: #ff4d6d;
+  margin-top: -2px;
+}
+
+@media (max-width: 680px) {
+
+  .suggestion-wrapper {
+    padding-top: 20px;
+  }
+
+  .suggestion-header h1 {
+    font-size: 36px;
+  }
+
+}

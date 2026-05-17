@@ -11,6 +11,7 @@
 
   <link rel="stylesheet" href="base.css">
   <link rel="stylesheet" href="components.css">
+  <link rel="stylesheet" href="pages.css">
 </head>
 <body>
 
@@ -26,6 +27,12 @@
       <button onclick="showPage('playlist')" id="nav-playlist">
         <span>Playlist</span>
         <span id="playlist-badge" style="display:none; background:var(--coral); color:#fff; border-radius:10px; font-size:10px; font-weight:700; padding:1px 7px; margin-left:4px;"></span>
+      </button>
+      <button onclick="showPage('sobre')" id="nav-sobre">
+        <span>Sobre</span>
+      </button>
+      <button onclick="showPage('contato')" id="nav-contato">
+        <span>Contato</span>
       </button>
     </nav>
   </header>
@@ -52,7 +59,7 @@
       <div class="filters">
         <div class="filter-group">
           <button class="filter-btn active" data-type="music" onclick="setType('music', this)">Música</button>
-          <button class="filter-btn" data-type="album"  onclick="setType('album', this)">Álbum</button>
+          <button class="filter-btn" data-type="album" onclick="setType('album', this)">Álbum</button>
           <button class="filter-btn" data-type="artist" onclick="setType('artist', this)">Artista</button>
         </div>
         <div class="explicit-toggle">
@@ -90,12 +97,196 @@
       <div id="playlist-content"></div>
     </div>
 
+    <div class="page" id="page-sobre">
+
+      <div class="about-hero">
+        <p class="section-label">Quem somos</p>
+        <h1>A rádio que<br>descobre <span>talentos</span></h1>
+        <p>
+          A SoundSearch é a rádio universitária do ICEV dedicada à descoberta e divulgação de novos artistas.
+          Conectamos estudantes a músicas que eles ainda não sabem que amam.
+        </p>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-item">
+          <span class="stat-value">2k+</span>
+          <span class="stat-label">Ouvintes ativos</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">300+</span>
+          <span class="stat-label">Artistas divulgados</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">5 anos</span>
+          <span class="stat-label">No ar</span>
+        </div>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-card">
+          <span class="card-icon">🎯</span>
+          <h3>Nossa missão</h3>
+          <p>Facilitar a descoberta musical de forma simples e rápida, sem cadastros ou barreiras, direto do navegador.</p>
+        </div>
+        <div class="about-card">
+          <span class="card-icon">🎵</span>
+          <h3>O que fazemos</h3>
+          <p>Integramos a iTunes Search API para trazer resultados reais de músicas, álbuns e artistas com preview instantâneo.</p>
+        </div>
+        <div class="about-card">
+          <span class="card-icon">📻</span>
+          <h3>Sugestões à rádio</h3>
+          <p>Ouvintes podem salvar músicas na playlist pessoal e marcá-las como sugestão para a programação da rádio.</p>
+        </div>
+        <div class="about-card">
+          <span class="card-icon">🎓</span>
+          <h3>Projeto universitário</h3>
+          <p>Desenvolvido no Instituto de Ensino Superior ICEV, Teresina-PI, como projeto da disciplina de Desenvolvimento Web.</p>
+        </div>
+      </div>
+
+      <div class="team-section">
+        <h2 class="section-title">Equipe</h2>
+        <div class="team-grid">
+          <div class="team-card">
+            <div class="team-avatar">👤</div>
+            <div class="team-name">Antonio Eduardo Paiva</div>
+            <div class="team-role">Dev & Designer</div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar">🎙️</div>
+            <div class="team-name">Ana Costa</div>
+            <div class="team-role">Coordenadora</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="page" id="page-contato">
+      <div class="contact-layout">
+
+        <div>
+          <div class="contact-intro">
+            <p class="section-label">Fale conosco</p>
+            <h1>Entre em<br>contato</h1>
+            <p>
+              Tem uma sugestão de música, quer divulgar seu trabalho na rádio ou simplesmente quer dizer oi?
+              Preencha o formulário e a equipe SoundSearch entra em contato.
+            </p>
+          </div>
+
+          <div class="contact-info-list">
+            <div class="contact-info-item">
+              <span class="contact-info-icon">📍</span>
+              <div>
+                <strong>Endereço</strong>
+                <span>Rua Dr. José Auto de Abreu, 2929 — São Cristóvão, Teresina-PI</span>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <span class="contact-info-icon">📧</span>
+              <div>
+                <strong>E-mail</strong>
+                <span>contato.icev@somosicev.com</span>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <span class="contact-info-icon">📞</span>
+              <div>
+                <strong>Telefone</strong>
+                <span>(86) 3133-7000</span>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <span class="contact-info-icon">🌐</span>
+              <div>
+                <strong>Site</strong>
+                <span>www.somosicev.com</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-form-card">
+          <h2>Enviar mensagem</h2>
+          <p class="form-subtitle">Campos marcados com <span style="color:var(--coral)">*</span> são obrigatórios.</p>
+
+          <div id="contact-form-wrap">
+            <form id="contact-form" novalidate onsubmit="return false;">
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="f-nome">Nome <span class="required">*</span></label>
+                  <input type="text" id="f-nome" class="form-control" placeholder="Seu nome">
+                  <div class="field-error" id="err-nome">Por favor, informe seu nome.</div>
+                </div>
+                <div class="form-group">
+                  <label for="f-sobrenome">Sobrenome <span class="required">*</span></label>
+                  <input type="text" id="f-sobrenome" class="form-control" placeholder="Sobrenome">
+                  <div class="field-error" id="err-sobrenome">Informe seu sobrenome.</div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="f-email">E-mail <span class="required">*</span></label>
+                <input type="email" id="f-email" class="form-control" placeholder="seu@email.com">
+                <div class="field-error" id="err-email">Informe um e-mail válido.</div>
+              </div>
+
+              <div class="form-group">
+                <label for="f-assunto">Assunto <span class="required">*</span></label>
+                <select id="f-assunto" class="form-control">
+                  <option value="">Selecione...</option>
+                  <option value="sugestao">Sugestão de música</option>
+                  <option value="divulgacao">Divulgar meu trabalho</option>
+                  <option value="parceria">Proposta de parceria</option>
+                  <option value="outro">Outro</option>
+                </select>
+                <div class="field-error" id="err-assunto">Selecione um assunto.</div>
+              </div>
+
+              <div class="form-group">
+                <label for="f-mensagem">Mensagem <span class="required">*</span></label>
+                <textarea id="f-mensagem" class="form-control" placeholder="Escreva sua mensagem..."></textarea>
+                <div class="field-error" id="err-mensagem">A mensagem não pode estar vazia.</div>
+              </div>
+
+              <div class="form-group" style="display:flex; align-items:center; gap:10px; margin-top:4px;">
+                <input type="checkbox" id="f-termos" style="accent-color:var(--coral); width:15px; height:15px; flex-shrink:0;">
+                <label for="f-termos" style="font-size:11px; color:var(--text-2); text-transform:none; letter-spacing:0; font-weight:400; cursor:pointer;">
+                  Concordo que minha mensagem poderá ser lida pela equipe da rádio.
+                </label>
+              </div>
+              <div class="field-error" id="err-termos">Você precisa concordar para enviar.</div>
+
+              <button type="button" class="btn-submit" onclick="submitContactForm()">
+                Enviar mensagem ✉️
+              </button>
+
+            </form>
+          </div>
+
+          <div class="form-success" id="form-success">
+            <span class="success-icon">✅</span>
+            <h3>Mensagem enviada!</h3>
+            <p>Obrigado pelo contato. A equipe SoundSearch responderá em breve.</p>
+            <button class="btn-primary" onclick="resetContactForm()" style="margin: 0 auto;">
+              Enviar outra mensagem
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <div class="mini-player" id="mini-player">
     <img class="mini-player-art" id="player-art" src="" alt="">
     <div class="mini-player-info">
-      <div class="mini-player-title"  id="player-title">—</div>
+      <div class="mini-player-title" id="player-title">—</div>
       <div class="mini-player-artist" id="player-artist">—</div>
     </div>
     <div class="mini-player-controls">

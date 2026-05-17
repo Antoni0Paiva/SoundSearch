@@ -1,6 +1,6 @@
-let currentType  = 'music';
+let currentType = 'music';
 let currentTrack = null;
-let isPlaying    = false;
+let isPlaying = false;
 let searchTimeout = null;
 let playlist = JSON.parse(localStorage.getItem('ss-playlist') || '[]');
 
@@ -10,8 +10,12 @@ function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
-  document.getElementById('nav-' + name).classList.add('active');
+
+  const navBtn = document.getElementById('nav-' + name);
+  if (navBtn) navBtn.classList.add('active');
+
   if (name === 'playlist') renderPlaylist();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function setType(type, btn) {
@@ -48,7 +52,7 @@ async function doSearch() {
 
     if (!document.getElementById('explicit-check').checked) {
       results = results.filter(r =>
-        r.trackExplicitness      !== 'explicit' &&
+        r.trackExplicitness !== 'explicit' &&
         r.collectionExplicitness !== 'explicit'
       );
     }
@@ -74,14 +78,14 @@ function renderResults(results) {
     </div>`;
 
   const cardsHtml = results.map(item => {
-    const artUrl     = item.artworkUrl100 ? item.artworkUrl100.replace('100x100', '300x300') : null;
-    const title      = item.trackName || item.collectionName || item.artistName || 'Desconhecido';
-    const artist     = item.artistName || '';
-    const genre      = item.primaryGenreName || '';
-    const itemId     = item.trackId || item.collectionId || item.artistId;
+    const artUrl = item.artworkUrl100 ? item.artworkUrl100.replace('100x100', '300x300') : null;
+    const title = item.trackName || item.collectionName || item.artistName || 'Desconhecido';
+    const artist = item.artistName || '';
+    const genre = item.primaryGenreName || '';
+    const itemId = item.trackId || item.collectionId || item.artistId;
     const hasPreview = !!item.previewUrl;
-    const isSaved    = playlist.some(p => p.id === itemId);
-    const itemJson   = JSON.stringify(item).replace(/"/g, '&quot;');
+    const isSaved = playlist.some(p => p.id === itemId);
+    const itemJson = JSON.stringify(item).replace(/"/g, '&quot;');
 
     return `
       <div class="card" onclick="showDetail(${itemJson})">
@@ -111,20 +115,27 @@ function renderResults(results) {
 }
 
 function showDetail(item) {
-  const artUrl   = item.artworkUrl100 ? item.artworkUrl100.replace('100x100', '600x600') : null;
-  const title    = item.trackName || item.collectionName || item.artistName || 'Desconhecido';
-  const artist   = item.artistName || '';
-  const album    = item.collectionName || '—';
-  const genre    = item.primaryGenreName || '—';
+  const artUrl = item.artworkUrl100 ? item.artworkUrl100.replace('100x100', '600x600') : null;
+  const title = item.trackName || item.collectionName || item.artistName || 'Desconhecido';
+  const artist = item.artistName || '';
+  const album = item.collectionName || '—';
+  const genre = item.primaryGenreName || '—';
   const duration = item.trackTimeMillis ? msToTime(item.trackTimeMillis) : '—';
-  const price    = item.trackPrice
+
+  const price = item.trackPrice
     ? `R$ ${item.trackPrice.toFixed(2).replace('.', ',')}`
     : item.collectionPrice
       ? `R$ ${item.collectionPrice.toFixed(2).replace('.', ',')}`
       : 'Gratuito';
-  const type     = item.wrapperType === 'artist' ? 'Artista' : item.kind === 'song' ? 'Música' : 'Álbum';
-  const itemId   = item.trackId || item.collectionId || item.artistId;
-  const isSaved  = playlist.some(p => p.id === itemId);
+
+  const type = item.wrapperType === 'artist'
+    ? 'Artista'
+    : item.kind === 'song'
+      ? 'Música'
+      : 'Álbum';
+
+  const itemId = item.trackId || item.collectionId || item.artistId;
+  const isSaved = playlist.some(p => p.id === itemId);
   const itemJson = JSON.stringify(item).replace(/"/g, '&quot;');
 
   document.getElementById('detail-content').innerHTML = `
@@ -157,7 +168,6 @@ function showDetail(item) {
     </div>`;
 
   showPage('detail');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function playTrack(item) {
@@ -175,11 +185,13 @@ function playTrack(item) {
   audio.play().catch(() => {});
   isPlaying = true;
 
-  const title  = item.trackName || item.collectionName || item.artistName;
-  document.getElementById('player-title').textContent  = title;
+  const title = item.trackName || item.collectionName || item.artistName;
+
+  document.getElementById('player-title').textContent = title;
   document.getElementById('player-artist').textContent = item.artistName || '';
-  document.getElementById('player-art').src            = item.artworkUrl100 || '';
+  document.getElementById('player-art').src = item.artworkUrl100 || '';
   document.getElementById('mini-play-btn').textContent = '⏸';
+
   document.getElementById('mini-player').classList.add('visible');
   document.body.classList.add('player-open');
 
@@ -205,6 +217,7 @@ function closePlayer() {
   audio.src = '';
   isPlaying = false;
   currentTrack = null;
+
   document.getElementById('mini-player').classList.remove('visible');
   document.body.classList.remove('player-open');
 }
@@ -212,9 +225,13 @@ function closePlayer() {
 function seekAudio(e) {
   if (!currentTrack || !audio.duration) return;
 
-  const bar   = document.getElementById('progress-bar');
-  const rect  = bar.getBoundingClientRect();
-  const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  const bar = document.getElementById('progress-bar');
+  const rect = bar.getBoundingClientRect();
+
+  const ratio = Math.max(
+    0,
+    Math.min(1, (e.clientX - rect.left) / rect.width)
+  );
 
   audio.currentTime = ratio * audio.duration;
 }
@@ -222,10 +239,10 @@ function seekAudio(e) {
 audio.addEventListener('timeupdate', () => {
   if (!audio.duration) return;
 
-  document.getElementById('progress-fill').style.width    =
+  document.getElementById('progress-fill').style.width =
     (audio.currentTime / audio.duration * 100) + '%';
 
-  document.getElementById('player-current').textContent  =
+  document.getElementById('player-current').textContent =
     formatTime(audio.currentTime);
 
   document.getElementById('player-duration').textContent =
@@ -239,7 +256,7 @@ audio.addEventListener('ended', () => {
 });
 
 function toggleSave(item) {
-  const id  = item.trackId || item.collectionId || item.artistId;
+  const id = item.trackId || item.collectionId || item.artistId;
   const idx = playlist.findIndex(p => p.id === id);
 
   if (idx >= 0) {
@@ -259,15 +276,17 @@ function updateSaveButtons(id, saved) {
   const cardBtn = document.getElementById('save-btn-' + id);
 
   if (cardBtn) {
-    cardBtn.className   = 'btn-save ' + (saved ? 'saved' : '');
+    cardBtn.className = 'btn-save ' + (saved ? 'saved' : '');
     cardBtn.textContent = saved ? '✓' : '+';
   }
 
   const detailBtn = document.getElementById('detail-save-btn');
 
   if (detailBtn) {
-    detailBtn.className   = 'btn-secondary ' + (saved ? 'active' : '');
-    detailBtn.textContent = saved ? '✓ Salvo' : '+ Salvar na Playlist';
+    detailBtn.className = 'btn-secondary ' + (saved ? 'active' : '');
+    detailBtn.textContent = saved
+      ? '✓ Salvo'
+      : '+ Salvar na Playlist';
   }
 }
 
@@ -275,12 +294,11 @@ function updateBadge() {
   const badge = document.getElementById('playlist-badge');
 
   badge.style.display = playlist.length > 0 ? 'inline' : 'none';
-  badge.textContent   = playlist.length;
+  badge.textContent = playlist.length;
 }
 
 function toggleSuggest(id) {
   const entry = playlist.find(p => p.id === id);
-
   if (!entry) return;
 
   entry.suggestRadio = !entry.suggestRadio;
@@ -290,11 +308,17 @@ function toggleSuggest(id) {
   const btn = document.getElementById('suggest-' + id);
 
   if (btn) {
-    btn.className   = 'suggest-toggle ' + (entry.suggestRadio ? 'on' : '');
-    btn.textContent = entry.suggestRadio ? '📻 Sugerido' : '📻 Sugerir';
+    btn.className =
+      'suggest-toggle ' + (entry.suggestRadio ? 'on' : '');
+
+    btn.textContent = entry.suggestRadio
+      ? '📻 Sugerido'
+      : '📻 Sugerir';
   }
 
-  if (entry.suggestRadio) showToast('📻 Sugerido para a rádio!');
+  if (entry.suggestRadio) {
+    showToast('📻 Sugerido para a rádio!');
+  }
 }
 
 function removeFromPlaylist(id) {
@@ -312,51 +336,192 @@ function renderPlaylist() {
   const container = document.getElementById('playlist-content');
 
   document.getElementById('playlist-count').textContent =
-    playlist.length + (playlist.length === 1 ? ' música salva' : ' músicas salvas');
+    playlist.length +
+    (playlist.length === 1
+      ? ' música salva'
+      : ' músicas salvas');
 
   if (!playlist.length) {
     container.innerHTML = `
       <div class="playlist-empty">
         <span class="empty-icon">🎵</span>
         <p>Sua playlist está vazia.<br>Busque músicas e salve suas favoritas.</p>
-        <button class="btn-primary" onclick="showPage('search')" style="margin:0 auto;">Buscar músicas</button>
+        <button class="btn-primary" onclick="showPage('search')" style="margin:0 auto;">
+          Buscar músicas
+        </button>
       </div>`;
     return;
   }
 
   container.innerHTML = playlist.map(({ item, id, suggestRadio }) => {
-    const title    = item.trackName || item.collectionName || item.artistName || '—';
-    const artist   = item.artistName || '';
-    const genre    = item.primaryGenreName || '';
+    const title =
+      item.trackName ||
+      item.collectionName ||
+      item.artistName ||
+      '—';
+
+    const artist = item.artistName || '';
+    const genre = item.primaryGenreName || '';
+
     const itemJson = JSON.stringify(item).replace(/"/g, '&quot;');
 
     return `
       <div class="playlist-item">
         <img class="playlist-art" src="${item.artworkUrl100 || ''}" alt="${title}" onerror="this.style.display='none'">
+
         <div class="playlist-info">
           <div class="playlist-title">${title}</div>
           <div class="playlist-artist">${artist}</div>
           ${genre ? `<div class="playlist-genre">${genre}</div>` : ''}
         </div>
+
         <div class="playlist-item-actions">
-          ${item.previewUrl ? `<button class="btn-icon" onclick="playTrack(${itemJson})">▶</button>` : ''}
+          ${item.previewUrl
+            ? `<button class="btn-icon" onclick="playTrack(${itemJson})">▶</button>`
+            : ''}
+
           <button class="suggest-toggle ${suggestRadio ? 'on' : ''}" id="suggest-${id}"
             onclick="toggleSuggest(${id})">
             📻 ${suggestRadio ? 'Sugerido' : 'Sugerir'}
           </button>
-          <button class="btn-icon remove" onclick="removeFromPlaylist(${id})">✕</button>
+
+          <button class="btn-icon remove" onclick="removeFromPlaylist(${id})">
+            ✕
+          </button>
         </div>
       </div>`;
   }).join('');
 }
 
+function submitContactForm() {
+  const fields = [
+    {
+      id: 'f-nome',
+      errId: 'err-nome',
+      check: v => v.trim().length >= 2
+    },
+    {
+      id: 'f-sobrenome',
+      errId: 'err-sobrenome',
+      check: v => v.trim().length >= 2
+    },
+    {
+      id: 'f-email',
+      errId: 'err-email',
+      check: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
+    },
+    {
+      id: 'f-assunto',
+      errId: 'err-assunto',
+      check: v => v !== ''
+    },
+    {
+      id: 'f-mensagem',
+      errId: 'err-mensagem',
+      check: v => v.trim().length >= 10
+    }
+  ];
+
+  let valid = true;
+
+  fields.forEach(({ id, errId, check }) => {
+    const el = document.getElementById(id);
+    const err = document.getElementById(errId);
+
+    const ok = check(el.value);
+
+    el.classList.toggle('error', !ok);
+    el.classList.toggle('success', ok);
+
+    err.classList.toggle('visible', !ok);
+
+    if (!ok) valid = false;
+  });
+
+  const termos = document.getElementById('f-termos');
+  const errTermos = document.getElementById('err-termos');
+
+  const termosOk = termos.checked;
+
+  errTermos.classList.toggle('visible', !termosOk);
+
+  if (!termosOk) valid = false;
+
+  if (!valid) {
+    showToast(' Preencha todos os campos corretamente.');
+    return;
+  }
+
+  const btn = document.querySelector('.btn-submit');
+
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+
+  setTimeout(() => {
+    document.getElementById('contact-form-wrap').style.display = 'none';
+
+    document.getElementById('form-success').classList.add('visible');
+
+    showToast('✅ Mensagem enviada com sucesso!');
+  }, 1000);
+}
+
+function resetContactForm() {
+  ['f-nome', 'f-sobrenome', 'f-email', 'f-mensagem'].forEach(id => {
+    const el = document.getElementById(id);
+
+    el.value = '';
+    el.classList.remove('error', 'success');
+  });
+
+  document.getElementById('f-assunto').value = '';
+  document.getElementById('f-assunto').classList.remove('error', 'success');
+
+  document.getElementById('f-termos').checked = false;
+
+  document.querySelectorAll('.field-error').forEach(e => {
+    e.classList.remove('visible');
+  });
+
+  const btn = document.querySelector('.btn-submit');
+
+  if (btn) {
+    btn.disabled = false;
+    btn.textContent = 'Enviar mensagem ✉️';
+  }
+
+  document.getElementById('contact-form-wrap').style.display = 'block';
+
+  document.getElementById('form-success').classList.remove('visible');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  ['f-nome', 'f-sobrenome', 'f-email', 'f-assunto', 'f-mensagem']
+    .forEach(id => {
+      const el = document.getElementById(id);
+
+      if (!el) return;
+
+      el.addEventListener('input', () => {
+        el.classList.remove('error');
+
+        document
+          .getElementById('err-' + id.replace('f-', ''))
+          .classList.remove('visible');
+      });
+    });
+});
+
 function msToTime(ms) {
   const s = Math.floor(ms / 1000);
+
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 }
 
 function formatTime(secs) {
-  return `${Math.floor(secs / 60)}:${String(Math.floor(secs % 60)).padStart(2, '0')}`;
+  return `${Math.floor(secs / 60)}:${String(
+    Math.floor(secs % 60)
+  ).padStart(2, '0')}`;
 }
 
 function showToast(msg) {
