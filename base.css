@@ -426,3 +426,36 @@ main {
   }
 
 }
+
+@media (max-width: 480px) {
+  header {
+    padding: 0 12px;
+    flex-wrap: wrap;
+    height: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    gap: 8px;
+  }
+
+  nav {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  nav button {
+    padding: 6px 8px;
+    font-size: 11px;
+  }
+
+  main {
+    padding: 0 16px 48px;
+  }
+
+  .hero {
+    padding: 32px 0 36px;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+  }
+}
